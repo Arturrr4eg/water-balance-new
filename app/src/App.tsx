@@ -1,30 +1,55 @@
-import { useState } from 'react';
-import ReactLogo from './assets/svg/react.svg?react'; // svgr plugin usage
-import viteLogo from '/vite.svg';
-import './styles/App.scss';
+import { useRef, useEffect, useState } from 'react';
+import { WaterTracker } from './components/WaterTracker/WaterTracker';
+import { SberAssistant } from './components/SberAssistant';
+import styles from './App.module.scss';
+
+interface WaterTrackerMethods {
+  addWater: (quantity?: number) => void;
+  removeWater: (quanity?: number) => void;
+  setGoal: (glasses: number) => void;
+  subscribeToChanges: (callback: (state: { current: number; goal: number }) => void) => void;
+}
 
 export const App = () => {
-	const [count, setCount] = useState(0);
+  const waterTrackerRef = useRef<WaterTrackerMethods>(null);
+  const [currentGlasses, setCurrentGlasses] = useState(0);
+  const [goalGlasses, setGoalGlasses] = useState(8);
 
-	return (
-		<>
-			<div>
-				<p>This is an image inside anchor imported like img tag:</p>
-				<a href="https://vitejs.dev" target="_blank">
-					<img src={viteLogo} className="logo" alt="Vite logo" />
-				</a>
-			</div>
-			<div>
-				<p>
-					This is an image inside anchor imported like React component via
-					vite-plugin-svgr:
-				</p>
-				<a href="https://react.dev" target="_blank">
-					<ReactLogo />
-				</a>
-			</div>
-			<h1>Vite + React</h1>
-			<button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-		</>
-	);
+  useEffect(() => {
+    if (waterTrackerRef.current) {
+      // Подписываемся на изменения в WaterTracker
+      waterTrackerRef.current.subscribeToChanges((state) => {
+        setCurrentGlasses(state.current);
+        setGoalGlasses(state.goal);
+      });
+    }
+  }, []);
+
+  const handleAddWater = (quantity?: number) => {
+    waterTrackerRef.current?.addWater(quantity);
+  };
+
+  const handleRemoveWater = (quantity?: number) => {
+    waterTrackerRef.current?.removeWater(quantity);
+  };
+
+  const handleSetGoal = (glasses: number) => {
+    console.log('App.handleSetGoal вызван с:', glasses);
+    waterTrackerRef.current?.setGoal(glasses);
+  };
+
+  return (
+    <>
+      <SberAssistant
+        currentGlasses={currentGlasses}
+        goalGlasses={goalGlasses}
+        onAddWater={handleAddWater}
+        onRemoveWater={handleRemoveWater}
+        onSetGoal={handleSetGoal}
+      />
+      <div className={styles.app}>
+        <WaterTracker ref={waterTrackerRef} />
+      </div>
+    </>
+  );
 };
