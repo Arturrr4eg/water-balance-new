@@ -3,6 +3,7 @@ import React from 'react';
 import blackSvg from '../../assets/svg/black.svg';
 import filledSvg from '../../assets/svg/filled.svg';
 import { Statistics } from '../Statistics/Statistics';
+import { MobileMenu } from '../MobileMenu/MobileMenu';
 import { useWaterProgress } from '../../hooks/useWaterProgress';
 import styles from './WaterTracker.module.scss';
 
@@ -158,6 +159,11 @@ export const WaterTracker = forwardRef<WaterTrackerMethods>((_, ref) => {
             </div>
           </div>
         </div>
+
+        <MobileMenu
+          statistics={statistics}
+          onUpdateProgress={updateHistoricalProgress}
+        />
       </div>
 
       <div className={styles.sidePanel}>

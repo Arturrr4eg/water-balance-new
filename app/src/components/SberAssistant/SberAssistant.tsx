@@ -76,7 +76,7 @@ const initializeAssistant = (
       initPhrase: `Запусти ${import.meta.env.VITE_APP_SMARTAPP}`,
       getState,
       nativePanel: {
-        defaultText: 'Скажите "Добавь стакан воды" или "Установи цель 8 стаканов"',
+        defaultText: '"Добавь стакан воды" или "Установи цель 8 стаканов"',
         screenshotMode: false,
         tabIndex: -1,
       },
@@ -175,9 +175,6 @@ export const SberAssistant = ({
     });
 
     return () => {
-      if (assistantRef.current) {
-        // Здесь можно добавить cleanup логику
-      }
     };
   }, [getStateForAssistant, onAddWater, onRemoveWater, onSetGoal]);
 

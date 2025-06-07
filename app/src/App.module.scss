@@ -2,5 +2,36 @@
   min-height: 100vh;
   background: var(--background);
   color: var(--text);
-  padding-bottom: 120px; /* Space for the assistant widget */
+  padding-bottom: 168px; /* Space for the assistant widget */
+}
+
+/* SberBox (1920x1080) */
+@media screen and (width: 1920px) and (height: 1080px) {
+  .app {
+    padding-bottom: 200px; /* Увеличенный отступ для большого экрана */
+    font-size: 1.2rem; /* Увеличенный размер шрифта для читаемости на ТВ */
+  }
+}
+
+/* SberPortal (1280x800) */
+@media screen and (width: 1280px) and (height: 800px) {
+  .app {
+    padding-bottom: 180px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Мобильные устройства - портретная ориентация */
+@media screen and (max-width: 768px) {
+  .app {
+    padding-bottom: 140px;
+    font-size: 1rem;
+  }
+}
+
+/* Мобильные устройства - ландшафтная ориентация */
+@media screen and (max-height: 768px) and (orientation: landscape) {
+  .app {
+    padding-bottom: 120px;
+  }
 }
