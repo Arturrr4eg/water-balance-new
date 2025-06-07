@@ -19,15 +19,8 @@
     padding: 2rem;
   }
 
-  /* Планшеты */
+  /* Планшеты и мобильные */
   @media screen and (max-width: 1024px) {
-    grid-template-columns: 250px 1fr 250px;
-    gap: 1.5rem;
-    padding: 1.5rem;
-  }
-
-  /* Мобильные устройства - портретная ориентация */
-  @media screen and (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1rem;
@@ -35,21 +28,13 @@
     min-height: 100vh;
 
     .sidePanel {
-      display: none; /* Скрываем боковые панели на мобильных */
+      display: none; /* Скрываем боковые панели */
     }
 
     .mainContent {
       width: 100%;
       padding: 1rem;
     }
-  }
-
-  /* Мобильные устройства - ландшафтная ориентация */
-  @media screen and (max-height: 768px) and (orientation: landscape) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    height: auto;
-    min-height: 100vh;
   }
 }
 
@@ -178,7 +163,7 @@
     height: 320px;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     width: 250px;
     height: 250px;
   }
@@ -203,7 +188,7 @@
   gap: 1rem;
   align-items: center;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     gap: 0.8rem;
   }
 }
@@ -214,7 +199,7 @@
   align-items: center;
   margin-bottom: 1rem;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     flex-direction: column;
     gap: 0.8rem;
     width: 100%;
@@ -237,7 +222,7 @@
   flex-wrap: wrap;
   justify-content: center;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     width: 100%;
 
     .button {
