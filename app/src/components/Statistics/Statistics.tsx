@@ -9,7 +9,7 @@ interface StatisticsProps {
 
 export const Statistics: React.FC<StatisticsProps> = ({ items, onUpdateProgress }) => {
   const [editingDate, setEditingDate] = useState<string | null>(null);
-  const [editingValue, setEditingValue] = useState<number>(0);
+  const [editingValue, setEditingValue] = useState<string | number>(0);
 
   const handleEdit = (item: DailyProgress) => {
     setEditingDate(item.date);
@@ -17,8 +17,11 @@ export const Statistics: React.FC<StatisticsProps> = ({ items, onUpdateProgress 
   };
 
   const handleSave = (item: DailyProgress) => {
-    if (onUpdateProgress && editingValue >= 0) {
-      onUpdateProgress(item.date, editingValue);
+    if (onUpdateProgress) {
+      const value = typeof editingValue === 'number' ? editingValue : parseInt(editingValue) || 0;
+      if (value >= 0) {
+        onUpdateProgress(item.date, value);
+      }
     }
     setEditingDate(null);
   };
@@ -59,7 +62,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ items, onUpdateProgress 
                         min="0"
                         max={item.goal}
                         value={editingValue}
-                        onChange={(e) => setEditingValue(Math.max(0, parseInt(e.target.value) || 0))}
+                        onChange={(e) => setEditingValue(e.target.value)}
                         className={styles.editInput}
                       />
                       <div className={styles.editButtons}>

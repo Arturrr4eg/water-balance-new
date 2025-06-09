@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { WaterTracker } from './components/WaterTracker/WaterTracker';
 import { SberAssistant } from './components/SberAssistant';
 import styles from './App.module.scss';
@@ -17,10 +17,9 @@ export const App = () => {
 
   useEffect(() => {
     if (waterTrackerRef.current) {
-      // Подписываемся на изменения в WaterTracker
-      waterTrackerRef.current.subscribeToChanges((state) => {
-        setCurrentGlasses(state.current);
-        setGoalGlasses(state.goal);
+      waterTrackerRef.current.subscribeToChanges(({ current, goal }) => {
+        setCurrentGlasses(current);
+        setGoalGlasses(goal);
       });
     }
   }, []);
@@ -34,12 +33,12 @@ export const App = () => {
   };
 
   const handleSetGoal = (glasses: number) => {
-    console.log('App.handleSetGoal вызван с:', glasses);
     waterTrackerRef.current?.setGoal(glasses);
   };
 
   return (
-    <>
+    <div className={styles.app}>
+      <WaterTracker ref={waterTrackerRef} />
       <SberAssistant
         currentGlasses={currentGlasses}
         goalGlasses={goalGlasses}
@@ -47,9 +46,6 @@ export const App = () => {
         onRemoveWater={handleRemoveWater}
         onSetGoal={handleSetGoal}
       />
-      <div className={styles.app}>
-        <WaterTracker ref={waterTrackerRef} />
-      </div>
-    </>
+    </div>
   );
 };

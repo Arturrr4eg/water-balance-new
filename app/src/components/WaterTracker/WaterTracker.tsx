@@ -26,8 +26,8 @@ export const WaterTracker = forwardRef<WaterTrackerMethods>((_, ref) => {
     updateHistoricalProgress
   } = useWaterProgress(15);
 
-  const [glassesToAdd, setGlassesToAdd] = useState(1);
-  const [newGoal, setNewGoal] = useState(dailyGoal);
+  const [glassesToAdd, setGlassesToAdd] = useState<string | number>(1);
+  const [newGoal, setNewGoal] = useState<string | number>(dailyGoal);
 
   // Синхронизируем newGoal с dailyGoal при загрузке и изменении цели
   useEffect(() => {
@@ -40,7 +40,7 @@ export const WaterTracker = forwardRef<WaterTrackerMethods>((_, ref) => {
   useImperativeHandle(ref, () => ({
     addWater: (quantity?: number) => {
       console.log('WaterTracker: addWater вызван с количеством:', quantity);
-      const glassesToUpdate = quantity ?? glassesToAdd;
+      const glassesToUpdate = quantity ?? (typeof glassesToAdd === 'number' ? glassesToAdd : parseInt(glassesToAdd) || 1);
       console.log('WaterTracker: будет добавлено стаканов:', glassesToUpdate);
 
       if (!isNaN(glassesToUpdate) && glassesToUpdate > 0) {
@@ -53,7 +53,7 @@ export const WaterTracker = forwardRef<WaterTrackerMethods>((_, ref) => {
     },
     removeWater: (quantity?: number) => {
       console.log('WaterTracker: removeWater вызван с количеством:', quantity);
-      const glassesToUpdate = quantity ?? glassesToAdd;
+      const glassesToUpdate = quantity ?? (typeof glassesToAdd === 'number' ? glassesToAdd : parseInt(glassesToAdd) || 1);
       console.log('WaterTracker: будет удалено стаканов:', glassesToUpdate);
 
       if (!isNaN(glassesToUpdate) && glassesToUpdate > 0) {
@@ -80,9 +80,10 @@ export const WaterTracker = forwardRef<WaterTrackerMethods>((_, ref) => {
 
   const handleGoalChange = () => {
     console.log('handleGoalChange: текущее значение newGoal:', newGoal);
-    if (newGoal > 0) {
-      console.log('handleGoalChange: вызываем updateGoal с:', newGoal);
-      updateGoal(newGoal);
+    const goalValue = typeof newGoal === 'number' ? newGoal : parseInt(newGoal) || 1;
+    if (goalValue > 0) {
+      console.log('handleGoalChange: вызываем updateGoal с:', goalValue);
+      updateGoal(goalValue);
     }
   };
 
@@ -118,7 +119,7 @@ export const WaterTracker = forwardRef<WaterTrackerMethods>((_, ref) => {
               type="number"
               min="1"
               value={newGoal}
-              onChange={(e) => setNewGoal(Math.max(1, parseInt(e.target.value) || 1))}
+              onChange={(e) => setNewGoal(e.target.value)}
               placeholder="Дневная цель"
               className={styles.input}
             />
@@ -139,19 +140,25 @@ export const WaterTracker = forwardRef<WaterTrackerMethods>((_, ref) => {
               min="1"
               max={dailyGoal - currentGlasses}
               value={glassesToAdd}
-              onChange={(e) => setGlassesToAdd(Math.max(1, parseInt(e.target.value) || 0))}
+              onChange={(e) => setGlassesToAdd(e.target.value)}
               className={styles.input}
             />
             <div className={styles.buttonGroup}>
               <button
-                onClick={() => updateProgress(Math.min(currentGlasses + glassesToAdd, dailyGoal))}
+                onClick={() => {
+                  const value = typeof glassesToAdd === 'number' ? glassesToAdd : parseInt(glassesToAdd) || 1;
+                  updateProgress(Math.min(currentGlasses + value, dailyGoal));
+                }}
                 className={`${styles.button} ${styles.addButton}`}
                 disabled={currentGlasses >= dailyGoal}
               >
                 Добавить стаканы
               </button>
               <button
-                onClick={() => updateProgress(Math.max(currentGlasses - glassesToAdd, 0))}
+                onClick={() => {
+                  const value = typeof glassesToAdd === 'number' ? glassesToAdd : parseInt(glassesToAdd) || 1;
+                  updateProgress(Math.max(currentGlasses - value, 0));
+                }}
                 className={`${styles.button} ${styles.removeButton}`}
                 disabled={currentGlasses === 0}
               >
