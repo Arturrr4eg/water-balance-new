@@ -292,6 +292,24 @@
   p {
     margin: 0.5rem 0;
   }
+
+  .warning {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--warning-bg, rgba(255, 107, 107, 0.1));
+    border-radius: 0.5rem;
+    color: var(--warning-color, #ff6b6b);
+    font-size: 0.8rem;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+
+    p {
+      margin: 0;
+      font-size: 0.8rem;
+      line-height: 1.2;
+    }
+  }
 }
 
 .loading {
