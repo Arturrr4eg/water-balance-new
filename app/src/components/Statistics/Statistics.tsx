@@ -50,7 +50,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ items, onUpdateProgress 
                 <div className={styles.progress}>
                   <div
                     className={styles.progressBar}
-                    style={{ width: `${item.percentage}%` }}
+                    style={{ width: `${Math.min(item.percentage, 100)}%` }}
                   />
                   <span className={styles.percentage}>{Math.round(item.percentage)}%</span>
                 </div>

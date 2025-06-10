@@ -76,7 +76,7 @@ const initializeAssistant = (
       initPhrase: `Запусти ${import.meta.env.VITE_APP_SMARTAPP}`,
       getState,
       nativePanel: {
-        defaultText: '"Добавь стакан воды" или "Установи цель 8 стаканов"',
+        defaultText: '"Добавь 1 стакан воды" или "Установи цель 8 стаканов"',
         screenshotMode: false,
         tabIndex: -1,
       },

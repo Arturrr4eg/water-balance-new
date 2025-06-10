@@ -35,7 +35,9 @@ export const WaterTracker = forwardRef<WaterTrackerMethods>((_, ref) => {
     setNewGoal(dailyGoal);
   }, [dailyGoal]);
 
-  const fillPercentage = Math.min((currentGlasses / dailyGoal) * 100, 100);
+  // Рассчитываем процент заполнения, ограничивая его 100%
+  const actualPercentage = (currentGlasses / dailyGoal) * 100;
+  const fillPercentage = Math.min(actualPercentage, 100);
 
   useImperativeHandle(ref, () => ({
     addWater: (quantity?: number) => {
@@ -131,7 +133,16 @@ export const WaterTracker = forwardRef<WaterTrackerMethods>((_, ref) => {
           <div className={styles.stats}>
             <p>Дневная цель: {dailyGoal} стаканов</p>
             <p>Выпито сегодня: {currentGlasses} стаканов</p>
-            <p>Прогресс: {Math.round(fillPercentage)}%</p>
+            <p>Прогресс: {Math.round(actualPercentage)}%</p>
+            {currentGlasses > dailyGoal && (
+              <div className={styles.warning}>
+                {currentGlasses > dailyGoal * 1.5 ? (
+                  <p>Внимание! Вы значительно превысили дневную норму. Чрезмерное потребление воды может быть опасно для здоровья.</p>
+                ) : (
+                  <p>Вы превысили дневную цель. Возможно, стоит увеличить цель, если такое потребление для вас комфортно.</p>
+                )}
+              </div>
+            )}
           </div>
 
           <div className={styles.inputGroup}>
@@ -147,10 +158,9 @@ export const WaterTracker = forwardRef<WaterTrackerMethods>((_, ref) => {
               <button
                 onClick={() => {
                   const value = typeof glassesToAdd === 'number' ? glassesToAdd : parseInt(glassesToAdd) || 1;
-                  updateProgress(Math.min(currentGlasses + value, dailyGoal));
+                  updateProgress(currentGlasses + value);
                 }}
                 className={`${styles.button} ${styles.addButton}`}
-                disabled={currentGlasses >= dailyGoal}
               >
                 Добавить стаканы
               </button>
